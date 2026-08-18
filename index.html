@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALBIN RAJESH // PORTFOLIO</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET & ROOT (Cyber-Brutalist Theme) ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      cursor: crosshair;
+    }
+
+    :root {
+      --bg: #050505;
+      --text: #e0e0e0;
+      --accent: #ccff00; 
+      --accent-dim: rgba(204, 255, 0, 0.15);
+      --border: #333333;
+      --font-mono: 'Space Mono', monospace;
+      --grid-size: 20px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 14px; 
+      line-height: 1.7;
+      overflow-x: hidden;
+      background-image: 
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      background-position: center top;
+      animation: flicker 0.15s infinite;
+    }
+
+    /* ── RETRO LOADER BOOT SCREEN ── */
+    #retro-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg);
+      color: var(--accent);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10%;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      transition: opacity 0.4s ease-out;
+    }
+    
+    .loader-line {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 0;
+      max-width: fit-content;
+      margin-bottom: 10px;
+      border-right: 2px solid transparent;
+    }
+
+    .line-1 { animation: boot-type 0.3s steps(30, end) forwards; }
+    .line-2 { animation: boot-type 0.3s steps(30, end) 0.4s forwards; }
+    .line-3 { animation: boot-type 0.3s steps(30, end) 0.8s forwards; }
+    .line-4 { animation: boot-type 0.3s steps(30, end) 1.2s forwards; }
+    .line-5 { animation: boot-type 0.3s steps(30, end) 1.6s forwards, blink-loader-caret 0.5s step-end infinite alternate 1.6s; color: #fff; }
+
+    @keyframes boot-type {
+      from { width: 0; border-right-color: var(--accent); }
+      to { width: 100%; border-right-color: transparent; }
+    }
+    @keyframes blink-loader-caret {
+      from, to { border-right-color: transparent; }
+      50% { border-right-color: var(--accent); }
+    }
+
+    /* ── RETRO CRT & GLOBAL ANIMATIONS ── */
+    body::after {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 999999; 
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.98; }
+      5% { opacity: 0.92; }
+      10% { opacity: 0.98; }
+      15% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    .scanline {
+      width: 100%;
+      height: 100px;
+      z-index: 999998;
+      position: fixed;
+      pointer-events: none;
+      background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(204,255,0,0.1) 50%, rgba(0,0,0,0) 100%);
+      opacity: 0.3;
+      animation: scanlineAnim 8s linear infinite;
+    }
+
+    @keyframes scanlineAnim {
+      0% { top: -100px; }
+      100% { top: 100%; }
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .scroll-reveal {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .scroll-reveal.visible, .modal-anim {
+      visibility: visible;
+      animation: terminal-boot 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+    }
+    
+    .modal-anim-target { opacity: 0; }
+
+    @keyframes terminal-boot {
+      0% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateY(15px); }
+      20% { opacity: 1; clip-path: inset(0 0 80% 0); background-color: var(--accent); color: var(--bg); transform: translateY(0); }
+      40% { clip-path: inset(40% 0 20% 0); background-color: transparent; color: inherit; filter: invert(1); }
+      60% { clip-path: inset(10% 0 60% 0); filter: none; background-color: var(--text); color: var(--bg); }
+      80% { clip-path: inset(0 0 0 0); background-color: transparent; color: inherit; }
+      99% { clip-path: inset(0 0 0 0); }
+      100% { opacity: 1; clip-path: none; transform: translateY(0); }
+    }
+
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid transparent; 
+      vertical-align: bottom;
+      max-width: fit-content;
+      width: 0; 
+    }
+
+    .visible .typing-text {
+      animation: typing 2s steps(30, end) 0.6s forwards, blink-caret 0.75s step-end infinite 0.6s;
+    }
+
+    @keyframes typing {
+      from { width: 0; border-right-color: var(--accent); }
+      to { width: 100%; border-right-color: transparent; }
+    }
+    @keyframes blink-caret {
+      from, to { border-right-color: transparent; }
+      50% { border-right-color: var(--accent); }
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+    h1, h2, h3 { font-weight: 700; text-transform: uppercase; letter-spacing: -1px; }
+
+    /* ── DYNAMIC NAVIGATION HUD ── */
+    nav {
+      position: fixed;
+      top: 0; bottom: auto; left: 0; width: 100%;
+      border-bottom: 1px solid var(--accent);
+      background: rgba(5, 5, 5, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center; 
+      padding: 15px 30px; text-transform: uppercase; font-size: 14px;
+      transition: opacity 0.3s;
+    }
+    
+    nav.nav-bottom {
+      top: auto !important; bottom: 0 !important;
+      border-bottom: none; border-top: 1px solid var(--accent);
+      animation: teleportGlitch 0.5s ease-out forwards;
+    }
+
+    @keyframes teleportGlitch {
+      0% { transform: translateY(20px); opacity: 0; filter: invert(1); }
+      30% { transform: translateY(-10px); opacity: 0.8; filter: invert(1) hue-rotate(90deg); }
+      60% { transform: translateY(5px); opacity: 1; filter: invert(0); }
+      100% { transform: translateY(0); opacity: 1; filter: none; }
+    }
+
+    .nav-links { display: flex; gap: 25px; align-items: center; }
+    .nav-links a { color: var(--text); text-decoration: none; border: 1px solid transparent; padding: 4px 10px; transition: all 0.2s; }
+    .nav-links a:hover { border-color: var(--accent); color: var(--accent); text-shadow: 0 0 5px var(--accent); }
+
+    /* ── HERO SECTION ── */
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 5%; position: relative; }
+    .hero-container { max-width: 1200px; width: 100%; margin: 0 auto; position: relative; padding-top: 60px; }
+    .hero-content { display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .hero-text { flex: 1; }
+    
+    .sys-status {
+      font-size: 13px; color: var(--accent); margin-bottom: 15px; display: inline-block;
+      border: 1px solid var(--accent); padding: 4px 10px; animation: blink 2s infinite;
+      box-shadow: 0 0 10px var(--accent-dim);
+    }
+
+    .hero-title { font-size: clamp(2.5rem, 7vw, 5.5rem); line-height: 0.9; margin-bottom: 15px; position: relative; }
+
+    .glitch { position: relative; color: var(--text); }
+    .glitch::before, .glitch::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
+    .glitch::before { left: 2px; text-shadow: -2px 0 #ff003c; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 5s infinite linear alternate-reverse; }
+    .glitch::after { left: -2px; text-shadow: -2px 0 #00e1ff; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 5s infinite linear alternate-reverse; }
+
+    @keyframes glitch-anim { 0% { clip: rect(21px, 9999px, 92px, 0); } 20% { clip: rect(2px, 9999px, 86px, 0); } 100% { clip: rect(15px, 9999px, 90px, 0); } }
+    @keyframes glitch-anim2 { 0% { clip: rect(65px, 9999px, 100px, 0); } 20% { clip: rect(12px, 9999px, 44px, 0); } 100% { clip: rect(80px, 9999px, 20px, 0); } }
+
+    .role-box { background-color: #050505 !important; border: 1px solid var(--accent); padding: 8px 15px; display: inline-block; margin-bottom: 20px; box-shadow: 4px 4px 0px rgba(204, 255, 0, 0.2); position: relative; z-index: 10; }
+    .hero-desc { font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 600px; margin-bottom: 30px; border-left: 2px solid var(--accent); padding-left: 15px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); }
+
+    .btn { display: inline-block; text-transform: uppercase; font-weight: 700; text-decoration: none; padding: 12px 24px; font-size: 13px; border: 1px solid var(--text); color: var(--text); background: rgba(0, 0, 0, 0.8); transition: all 0.2s; position: relative; cursor: pointer; }
+    .btn:hover { background: var(--text); color: var(--bg); }
+    .btn-primary { border-color: var(--accent); color: var(--accent); }
+    .btn-primary:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 15px var(--accent-dim); }
+
+    .hero-visual { flex: 0 0 320px; position: relative; }
+    .portrait-frame { border: 1px solid var(--accent); background: rgba(5, 5, 5, 0.8); padding: 10px; position: relative; box-shadow: 0 0 15px var(--accent-dim); overflow: hidden; }
+    .portrait-frame::before { content: ''; position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px; border: 1px dashed var(--border); pointer-events: none; z-index: -1; }
+    .frame-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 10px; font-size: 10px; color: var(--accent); }
+    .cam-status { animation: blink 2s infinite; }
+    .portrait-img-wrapper { position: relative; width: 100%; height: 100%; background: #000; overflow: hidden; }
+    
+    .portrait-img { width: 100%; height: auto; display: block; filter: grayscale(100%) contrast(1.4) sepia(100%) hue-rotate(50deg) saturate(400%) brightness(0.9); transition: filter 0.3s; }
+    .portrait-img-wrapper::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient( 0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px ); pointer-events: none; }
+
+    @keyframes cam-glitch { 0% { transform: translate(0, 0); } 20% { transform: translate(-2px, 1px); filter: grayscale(100%) contrast(2) sepia(100%) hue-rotate(50deg) saturate(500%) brightness(1.2); } 40% { transform: translate(-1px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0, 0); } }
+    .portrait-frame:hover .portrait-img { animation: cam-glitch 0.15s infinite; }
+
+    /* ── TECH STACK MARQUEE ── */
+    .marquee-container { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(5, 5, 5, 0.8); padding: 12px 0; overflow: hidden; white-space: nowrap; display: flex; }
+    .marquee-content { display: inline-block; animation: scroll-left 25s linear infinite; font-size: 1.2rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 8px rgba(204, 255, 0, 0.3); }
+    .marquee-content span { margin: 0 30px; }
+    @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ── PROJECTS GRID ── */
+    section { padding: 90px 5%; border-bottom: 1px solid var(--border); }
+    .section-title { font-size: 1.8rem; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+    .section-title::after { content: ''; flex-grow: 1; height: 1px; background: var(--border); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+
+    .card { border: 1px solid var(--border); background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(3px); position: relative; transition: border-color 0.3s; cursor: pointer; }
+    .card:hover { border-color: var(--accent); box-shadow: 0 0 10px rgba(204, 255, 0, 0.1); }
+    .card-header { border-bottom: 1px solid var(--border); padding: 10px 15px; font-size: 11px; color: var(--accent); display: flex; justify-content: space-between; }
+    .card-body { padding: 25px; }
+    .card-title { font-size: 1.4rem; margin-bottom: 10px; transition: color 0.3s; }
+    .card:hover .card-title { color: var(--accent); }
+    .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
+    .tag { font-size: 10px; border: 1px solid var(--text); padding: 3px 8px; }
+    .card:hover .tag { border-color: var(--accent); color: var(--accent); }
+
+    /* ── FULLSCREEN PROJECT EXPANSION MODAL ── */
+    #project-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg);
+      z-index: 100000; 
+      overflow-y: auto;
+      padding: 30px 5%;
+      background-image: 
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
+      
+      transform-origin: center;
+      will-change: transform, opacity;
+    }
+    
+    #project-modal.modal-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scaleY(0); 
+    }
+
+    #project-modal:not(.modal-hidden):not(.modal-closing) {
+      animation: crt-turn-on 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    }
+
+    /* Reverse closing animation class */
+    #project-modal.modal-closing {
+      animation: crt-turn-off 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+      pointer-events: none; /* Prevent clicks while shrinking */
+    }
+
+    @keyframes crt-turn-on {
+      0% { transform: scale(0.9, 0.005); opacity: 0; filter: brightness(3); }
+      30% { transform: scale(1, 0.01); opacity: 1; filter: brightness(2.5); }
+      100% { transform: scale(1, 1); opacity: 1; filter: brightness(1); }
+    }
+
+    @keyframes crt-turn-off {
+      0% { transform: scale(1, 1); opacity: 1; filter: brightness(1); }
+      70% { transform: scale(1, 0.01); opacity: 1; filter: brightness(2.5); }
+      100% { transform: scale(0.9, 0.005); opacity: 0; filter: brightness(3); }
+    }
+
+    .modal-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(5, 5, 5, 0.9);
+      border: 1px solid var(--border);
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .back-btn {
+      background: transparent;
+      color: var(--text);
+      border: none;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+    .back-btn:hover { color: var(--accent); text-shadow: 0 0 8px var(--accent-dim); }
+
+    .modal-hero-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+      margin-bottom: 30px;
+      filter: grayscale(80%) sepia(30%) hue-rotate(50deg) contrast(1.2);
+    }
+
+    .modal-header-group { margin-bottom: 40px; }
+    #modal-title { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+    #modal-subtitle { font-size: 1.1rem; color: #aaa; margin-bottom: 20px; }
+
+    .modal-section { margin-bottom: 40px; }
+    .modal-section-title { font-size: 1.2rem; border-bottom: 1px dashed var(--border); padding-bottom: 10px; margin-bottom: 20px; color: var(--text); }
+    .modal-section-title::before { content: "— "; color: var(--accent); }
+
+    .modal-mockup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+    .modal-mockup-grid img { width: 100%; height: auto; border: 1px solid var(--border); transition: all 0.3s; }
+    .modal-mockup-grid img:hover { border-color: var(--accent); transform: scale(1.02); box-shadow: 0 0 10px var(--accent-dim); }
+
+    /* ── TERMINAL DATA (About/Experience) ── */
+    .terminal-box { border: 1px solid var(--border); background: rgba(10, 10, 10, 0.9); padding: 30px; position: relative; }
+    .terminal-box::before { content: 'USER_PROFILE_DATA.SYS'; position: absolute; top: -11px; left: 20px; background: var(--bg); padding: 0 10px; color: var(--accent); font-size: 12px; border: 1px solid var(--border); }
+    .data-row { display: grid; grid-template-columns: 180px 1fr; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 15px; font-size: 13px; }
+    .data-label { color: #888; }
+
+    /* ── FOOTER ── */
+    footer { padding: 60px 5%; text-align: center; font-size: 12px; position: relative; z-index: 2; padding-bottom: 100px; }
+    .footer-links { margin-top: 25px; display: flex; justify-content: center; gap: 20px; }
+    .footer-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: all 0.2s; }
+    .footer-links a:hover { color: var(--accent); border-bottom-color: var(--accent); text-shadow: 0 0 5px var(--accent); }
+
+    @media (max-width: 900px) {
+      .hero-content { flex-direction: column; text-align: center; }
+      .hero-visual { order: -1; width: 100%; max-width: 250px; margin: 0 auto 20px; }
+      .hero-desc { margin: 0 auto 30px; border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 15px; }
+      .hero-text .btn { margin-bottom: 10px; }
+      .hero-title { font-size: 3rem; }
+      .data-row { grid-template-columns: 1fr; gap: 5px; }
+      nav { flex-direction: column; align-items: center; gap: 10px; padding: 10px; }
+      .typing-text { border-right: none; white-space: normal; animation: none; }
+      .modal-hero-img { height: 250px; } 
+    }
+  </style>
+</head>
+<body>
+
+  <!-- RETRO LOADER SCREEN -->
+  <div id="retro-loader">
+    <div class="loader-line line-1">> INITIATING BOOT SEQUENCE...</div>
+    <div class="loader-line line-2">> LOADING ASSETS (100%)</div>
+    <div class="loader-line line-3">> MOUNTING ROOT FILESYSTEM... OK</div>
+    <div class="loader-line line-4">> SYSTEM READY.</div>
+    <div class="loader-line line-5">> Executing STARTUP.EXE</div>
+  </div>
+
+  <!-- GLOBAL SCANLINE ANIMATION -->
+  <div class="scanline"></div>
+
+  <!-- HUD NAVIGATION -->
+  <nav id="hud-nav">
+    <div class="nav-logo">ID: A.RAJESH_//</div>
+    <div class="nav-links">
+      <a href="#projects">[ WORKS ]</a>
+      <a href="#data">[ DATA ]</a>
+      <a href="#contact">[ COMMS ]</a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header id="hero">
+    <div class="hero-container scroll-reveal">
+      <div class="hero-content">
+        
+        <div class="hero-text">
+          <div class="sys-status">SYS.ONLINE // I2U_CERTIFIED</div>
+          <h1 class="hero-title glitch" data-text="ALBIN RAJESH">ALBIN RAJESH</h1>
+          
+          <div class="role-box">
+            <h2 style="color: var(--text); font-size: 1.4rem; margin: 0;">>_ <span class="typing-text" style="color: var(--accent);">SOFTWARE & HARDWARE ENGINEER</span></h2>
+          </div>
+
+          <p class="hero-desc">
+            Versatile Software Developer skilled in embedded systems, audio signal processing, AI, and full-stack web development. Experienced in IoT automation, Raspberry Pi optimization, and scalable Django applications, delivering practical hardware-integrated solutions.
+          </p>
+          <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <a href="#projects" class="btn btn-primary">Execute: View_Projects</a>
+            <a href="mailto:albinrajesh03@gmail.com" class="btn">Init: Contact</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="portrait-frame">
+            <div class="frame-header">
+              <span>SRC: ASSETS/RINU.PNG</span>
+              <span class="cam-status">[REC]</span>
+            </div>
+            <div class="portrait-img-wrapper">
+              <img src="assets/rinu.png" alt="Albin Rajesh Feed" class="portrait-img">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- TECH STACK MARQUEE -->
+  <div class="marquee-container scroll-reveal">
+    <div class="marquee-content">
+      <span>>_PYTHON</span> <span>>_DJANGO</span> <span>>_RASPBERRY_PI</span> <span>>_PYTORCH</span> <span>>_OPENCV</span> <span>>_POSTGRESQL</span> <span>>_NODE.JS</span> <span>>_DOCKER</span>
+      <span>>_PYTHON</span> <span>>_DJANGO</span> <span>>_RASPBERRY_PI</span> <span>>_PYTORCH</span> <span>>_OPENCV</span> <span>>_POSTGRESQL</span> <span>>_NODE.JS</span> <span>>_DOCKER</span>
+    </div>
+  </div>
+
+  <!-- PROJECTS DATA -->
+  <section id="projects">
+    <h2 class="section-title scroll-reveal">01 // DEPLOYED_SYSTEMS</h2>
+    
+    <div class="projects-grid">
+      <!-- Project 1 -->
+      <div class="card scroll-reveal" onclick="openProject('vitalsense')">
+        <div class="card-header">
+          <span>DIR: /src/vitalsense/</span>
+          <span>[ML/CV]</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">PYTHON</span>
+            <span class="tag">OPENCV</span>
+            <span class="tag">rPPG & TS-CAN</span>
+            <span class="tag">RESNET-1D</span>
+          </div>
+          <h3 class="card-title">VitalSense</h3>
+          <p>Camera-based heart rate monitoring system estimating HR, HRV, and stress using hybrid POS and deep learning consensus models via standard webcam feeds.</p>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="card scroll-reveal" onclick="openProject('acoustic')">
+        <div class="card-header">
+          <span>DIR: /src/fault_detection/</span>
+          <span>[EMBEDDED]</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">RASPBERRY PI</span>
+            <span class="tag">NUMPY/SCIPY</span>
+            <span class="tag">FFT</span>
+          </div>
+          <h3 class="card-title">Acoustic Fault Detection</h3>
+          <p>Real-time mechanical fault detection system utilizing FFT-based audio fingerprinting and spectrogram analysis, highly optimized for embedded systems.</p>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="card scroll-reveal" onclick="openProject('ecommerce')">
+        <div class="card-header">
+          <span>DIR: /src/ecommerce/</span>
+          <span>[FULL-STACK]</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="tag">DJANGO</span>
+            <span class="tag">POSTGRESQL</span>
+            <span class="tag">HTML/CSS/JS</span>
+          </div>
+          <h3 class="card-title">Local Seller E-Commerce</h3>
+          <p>Created a robust full-stack web platform enabling local sellers to seamlessly list, track, and manage their products online.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE & PROFILE DATA -->
+  <section id="data">
+    <h2 class="section-title scroll-reveal">02 // SYSTEM_LOGS</h2>
+    
+    <div class="terminal-box scroll-reveal">
+      <div class="data-row">
+        <div class="data-label">LOCATION:</div>
+        <div>Kottayam, Kerala, India</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">ACADEMICS_01:</div>
+        <div><strong>B.Tech in Information Technology</strong> // Amal Jyothi College of Engineering [2022 - Present]</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">EXPERIENCE_01:</div>
+        <div><strong>Python Developer Intern // AMM Labs</strong><br>Built and optimized a real-time acoustic fault detection system for Raspberry Pi utilizing advanced audio signal processing (Jan 2025 – Feb 2025).</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">EXPERIENCE_02:</div>
+        <div><strong>Artificial Intelligence Intern // Accelerate X & Novolo AI</strong><br>Developed practical AI applications including intelligent agents, sentiment analysis, and image classification algorithms (Jun 2025 – Jul 2025).</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">CERTIFICATIONS:</div>
+        <div>Certified AI Engineer (NPTL) | Innovation Ideas Unleashed (I2U) Phase-II Funding</div>
+      </div>
+      <div class="data-row">
+        <div class="data-label">SKILL_SYS:</div>
+        <div>Python, Java, C, Node.js, Express.js, Firebase, MongoDB, Docker, Git, Arduino IDE, PyTorch.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / COMMS -->
+  <footer id="contact" class="scroll-reveal">
+    <h2 style="margin-bottom: 15px;">[ INITIATE COMMUNICATION PROTOCOL ]</h2>
+    <a href="mailto:albinrajesh03@gmail.com" class="btn btn-primary" style="margin-bottom: 20px;">OPEN COMMS >></a>
+    
+    <div class="footer-links">
+      <a href="https://github.com/ARofficials" target="_blank">[ GITHUB ]</a>
+      <a href="https://linkedin.com/in/albinrajesh" target="_blank">[ LINKEDIN ]</a>
+    </div>
+
+    <p style="color: var(--text); margin-top: 40px;">root@albin-rajesh:~# END_OF_FILE<span class="cam-status">_</span></p>
+  </footer>
+
+  <!-- FULLSCREEN PROJECT MODAL -->
+  <div id="project-modal" class="modal-hidden">
+    <div class="modal-container">
+      <button class="back-btn" onclick="closeProject()">← Back to Home</button>
+      
+      <img src="" alt="Project Hero Cover" class="modal-hero-img modal-anim-target" id="modal-img">
+      
+      <div class="modal-header-group modal-anim-target">
+        <h2 id="modal-title" class="glitch" data-text="Project Title">Project Title</h2>
+        <p id="modal-subtitle">Project Subtitle / Short description goes here.</p>
+        <a href="#" class="btn btn-primary" id="modal-link" target="_blank" style="margin-top: 10px;">[ GITHUB REPO ]</a>
+      </div>
+
+      <div class="modal-section modal-anim-target">
+        <h3 class="modal-section-title">Overview</h3>
+        <p id="modal-overview" style="line-height: 1.8; color: #ccc;">
+          Detailed project overview text will be populated dynamically here.
+        </p>
+      </div>
+
+      <div class="modal-section modal-anim-target">
+        <h3 class="modal-section-title">Technologies Used</h3>
+        <div class="card-tags" id="modal-tech">
+          <!-- Tags injected here -->
+        </div>
+      </div>
+
+      <div class="modal-section modal-anim-target">
+        <h3 class="modal-section-title">Mockups & Screenshots</h3>
+        <div class="modal-mockup-grid" id="modal-mockups">
+          <!-- Screenshot imgs injected here -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // --- PROJECT DATA LIBRARY ---
+    const projectsData = {
+      'vitalsense': {
+        title: 'VitalSense',
+        subtitle: 'Intelligent heart rate monitoring system estimating HR, HRV, and stress using standard webcam feeds.',
+        link: 'https://github.com/ARofficials',
+        overview: 'VitalSense is an advanced computer vision and machine learning application that utilizes rPPG (remote Photoplethysmography) to extract physiological signals directly from facial micro-color variations. The system employs a hybrid approach, combining traditional POS (Plane-Orthogonal to Skin) signal processing with deep learning consensus models like TS-CAN and ResNet-1D for robust, real-time vital sign estimation in varying lighting conditions.',
+        tech: ['Python', 'OpenCV', 'PyTorch', 'rPPG', 'ResNet-1D', 'TS-CAN'],
+        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=VITALSENSE_DASHBOARD',
+        mockups: [
+          'https://via.placeholder.com/400x800/050505/333333?text=UI_01',
+          'https://via.placeholder.com/400x800/050505/333333?text=UI_02',
+          'https://via.placeholder.com/400x800/050505/333333?text=UI_03',
+          'https://via.placeholder.com/400x800/050505/333333?text=UI_04'
+        ]
+      },
+      'acoustic': {
+        title: 'Acoustic Fault Detection',
+        subtitle: 'Real-time mechanical fault detection system highly optimized for embedded IoT systems.',
+        link: 'https://github.com/ARofficials',
+        overview: 'Developed as a solution for early industrial machine failure detection, this embedded system listens to mechanical vibrations and noise. It uses Fast Fourier Transform (FFT) algorithms and spectrogram generation to create audio fingerprints of healthy vs. failing machinery. The Python processing pipeline was highly optimized to run smoothly on edge devices like the Raspberry Pi with minimal latency.',
+        tech: ['Raspberry Pi', 'Python', 'NumPy/SciPy', 'FFT', 'IoT', 'Embedded Linux'],
+        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=ACOUSTIC_FFT_SPECTROGRAM',
+        mockups: [
+          'https://via.placeholder.com/800x450/050505/333333?text=PI_DASH',
+          'https://via.placeholder.com/800x450/050505/333333?text=SIGNAL_GRAPH',
+          'https://via.placeholder.com/800x450/050505/333333?text=LOGS'
+        ]
+      },
+      'ecommerce': {
+        title: 'Local Seller E-Commerce',
+        subtitle: 'Robust full-stack web platform enabling local sellers to seamlessly manage their products online.',
+        link: 'https://github.com/ARofficials',
+        overview: 'A scalable Django-based marketplace application designed specifically for local retail businesses. It features secure user authentication, role-based access control (Admin, Seller, Buyer), dynamic product listing management, and integrated order tracking. The backend relies on PostgreSQL for relational data integrity, while the frontend provides a clean, responsive layout utilizing modern HTML/CSS/JS practices.',
+        tech: ['Django', 'Python', 'PostgreSQL', 'HTML/CSS', 'JavaScript', 'Bootstrap'],
+        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=ECOMMERCE_DASHBOARD',
+        mockups: [
+          'https://via.placeholder.com/800x600/050505/333333?text=STOREFRONT',
+          'https://via.placeholder.com/800x600/050505/333333?text=CART',
+          'https://via.placeholder.com/800x600/050505/333333?text=SELLER_PANEL'
+        ]
+      }
+    };
+
+    // --- MODAL FUNCTIONS & ANIMATIONS ---
+    function openProject(projectId) {
+      const data = projectsData[projectId];
+      if (!data) return;
+
+      // Populate Data
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-title').setAttribute('data-text', data.title);
+      document.getElementById('modal-subtitle').innerText = data.subtitle;
+      document.getElementById('modal-overview').innerText = data.overview;
+      document.getElementById('modal-img').src = data.heroImg;
+      document.getElementById('modal-link').href = data.link;
+
+      // Populate Tags
+      const techContainer = document.getElementById('modal-tech');
+      techContainer.innerHTML = '';
+      data.tech.forEach(tech => {
+        const span = document.createElement('span');
+        span.className = 'tag';
+        span.innerText = tech;
+        techContainer.appendChild(span);
+      });
+
+      // Populate Mockups
+      const mockupContainer = document.getElementById('modal-mockups');
+      mockupContainer.innerHTML = '';
+      data.mockups.forEach(imgUrl => {
+        const img = document.createElement('img');
+        img.src = imgUrl;
+        img.alt = data.title + ' mockup';
+        mockupContainer.appendChild(img);
+      });
+
+      // Trigger Modal Inner Animations
+      const animTargets = document.querySelectorAll('.modal-anim-target');
+      animTargets.forEach(el => el.classList.remove('modal-anim')); 
+      
+      // Force DOM Reflow to reset animations
+      void document.getElementById('project-modal').offsetWidth; 
+
+      animTargets.forEach((el, index) => {
+        el.style.animationDelay = `${0.3 + (index * 0.15)}s`; 
+        el.classList.add('modal-anim');
+      });
+
+      // Show Modal
+      const modal = document.getElementById('project-modal');
+      modal.classList.remove('modal-hidden');
+      modal.classList.remove('modal-closing'); // Ensure it's not trying to close
+      document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeProject() {
+      const modal = document.getElementById('project-modal');
+      
+      // Trigger the reverse animation by adding the closing class
+      modal.classList.add('modal-closing');
+      
+      // Wait for the exact duration of the closing animation (0.5s) before completely hiding the element
+      setTimeout(() => {
+        modal.classList.add('modal-hidden');
+        modal.classList.remove('modal-closing');
+        document.body.style.overflow = 'auto'; // Restore background scrolling
+      }, 500); 
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      const loader = document.getElementById('retro-loader');
+      
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px 0px -10% 0px", 
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 150); 
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none'; 
+          
+          const revealElements = document.querySelectorAll('.scroll-reveal');
+          revealElements.forEach((el) => {
+            observer.observe(el);
+          });
+        }, 400); 
+      }, 2400);
+
+      const nav = document.getElementById('hud-nav');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 150) {
+          if (!nav.classList.contains('nav-bottom')) {
+            nav.classList.add('nav-bottom');
+          }
+        } else {
+          if (nav.classList.contains('nav-bottom')) {
+            nav.classList.remove('nav-bottom');
+          }
+        }
+      });
+      
+    });
+  </script>
+</body>
+</html>
