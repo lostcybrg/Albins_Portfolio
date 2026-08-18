@@ -18,6 +18,10 @@
       cursor: crosshair;
     }
 
+    html {
+      scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
+    }
+
     :root {
       --bg: #050505;
       --text: #e0e0e0;
@@ -40,8 +44,9 @@
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
       background-size: var(--grid-size) var(--grid-size);
       background-position: center top;
-      animation: flicker 0.15s infinite;
+      /*animation: flicker 0.15s infinite;*/ /* <-- REMOVE THIS LINE */
     }
+
 
     /* ── RETRO LOADER BOOT SCREEN ── */
     #retro-loader {
@@ -189,16 +194,29 @@
       transition: opacity 0.3s;
     }
     
+    /* Animation going down */
     nav.nav-bottom {
       top: auto !important; bottom: 0 !important;
       border-bottom: none; border-top: 1px solid var(--accent);
-      animation: teleportGlitch 0.5s ease-out forwards;
+      animation: teleportGlitchBottom 0.5s ease-out forwards;
     }
 
-    @keyframes teleportGlitch {
+    /* Animation coming back up */
+    nav.nav-top {
+      animation: teleportGlitchTop 0.5s ease-out forwards;
+    }
+
+    @keyframes teleportGlitchBottom {
       0% { transform: translateY(20px); opacity: 0; filter: invert(1); }
       30% { transform: translateY(-10px); opacity: 0.8; filter: invert(1) hue-rotate(90deg); }
       60% { transform: translateY(5px); opacity: 1; filter: invert(0); }
+      100% { transform: translateY(0); opacity: 1; filter: none; }
+    }
+
+    @keyframes teleportGlitchTop {
+      0% { transform: translateY(-20px); opacity: 0; filter: invert(1); }
+      30% { transform: translateY(10px); opacity: 0.8; filter: invert(1) hue-rotate(90deg); }
+      60% { transform: translateY(-5px); opacity: 1; filter: invert(0); }
       100% { transform: translateY(0); opacity: 1; filter: none; }
     }
 
@@ -270,9 +288,11 @@
     .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
     .tag { font-size: 10px; border: 1px solid var(--text); padding: 3px 8px; }
     .card:hover .tag { border-color: var(--accent); color: var(--accent); }
+    
+    .tag-dev { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: bold; }
 
-    /* ── FULLSCREEN PROJECT EXPANSION MODAL ── */
-    #project-modal {
+    /* ── FULLSCREEN MODALS (Projects & Resume) ── */
+    #project-modal, #resume-modal {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: var(--bg);
@@ -288,20 +308,20 @@
       will-change: transform, opacity;
     }
     
-    #project-modal.modal-hidden {
+    #project-modal.modal-hidden, #resume-modal.modal-hidden {
       opacity: 0;
       pointer-events: none;
       transform: scaleY(0); 
     }
 
-    #project-modal:not(.modal-hidden):not(.modal-closing) {
+    #project-modal:not(.modal-hidden):not(.modal-closing), 
+    #resume-modal:not(.modal-hidden):not(.modal-closing) {
       animation: crt-turn-on 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     }
 
-    /* Reverse closing animation class */
-    #project-modal.modal-closing {
+    #project-modal.modal-closing, #resume-modal.modal-closing {
       animation: crt-turn-off 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-      pointer-events: none; /* Prevent clicks while shrinking */
+      pointer-events: none; 
     }
 
     @keyframes crt-turn-on {
@@ -359,10 +379,6 @@
     .modal-section-title { font-size: 1.2rem; border-bottom: 1px dashed var(--border); padding-bottom: 10px; margin-bottom: 20px; color: var(--text); }
     .modal-section-title::before { content: "— "; color: var(--accent); }
 
-    .modal-mockup-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-    .modal-mockup-grid img { width: 100%; height: auto; border: 1px solid var(--border); transition: all 0.3s; }
-    .modal-mockup-grid img:hover { border-color: var(--accent); transform: scale(1.02); box-shadow: 0 0 10px var(--accent-dim); }
-
     /* ── TERMINAL DATA (About/Experience) ── */
     .terminal-box { border: 1px solid var(--border); background: rgba(10, 10, 10, 0.9); padding: 30px; position: relative; }
     .terminal-box::before { content: 'USER_PROFILE_DATA.SYS'; position: absolute; top: -11px; left: 20px; background: var(--bg); padding: 0 10px; color: var(--accent); font-size: 12px; border: 1px solid var(--border); }
@@ -371,8 +387,8 @@
 
     /* ── FOOTER ── */
     footer { padding: 60px 5%; text-align: center; font-size: 12px; position: relative; z-index: 2; padding-bottom: 100px; }
-    .footer-links { margin-top: 25px; display: flex; justify-content: center; gap: 20px; }
-    .footer-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: all 0.2s; }
+    .footer-links { margin-top: 25px; display: flex; justify-content: center; gap: 30px; }
+    .footer-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: all 0.2s; font-size: 1.4rem; }
     .footer-links a:hover { color: var(--accent); border-bottom-color: var(--accent); text-shadow: 0 0 5px var(--accent); }
 
     @media (max-width: 900px) {
@@ -408,6 +424,7 @@
     <div class="nav-links">
       <a href="#projects">[ WORKS ]</a>
       <a href="#data">[ DATA ]</a>
+      <a href="#resume-section">[ DOCS ]</a>
       <a href="#contact">[ COMMS ]</a>
     </div>
   </nav>
@@ -430,18 +447,19 @@
           </p>
           <div style="display: flex; gap: 15px; flex-wrap: wrap;">
             <a href="#projects" class="btn btn-primary">Execute: View_Projects</a>
-            <a href="mailto:albinrajesh03@gmail.com" class="btn">Init: Contact</a>
+            <!-- Updated href to scroll down to contact section -->
+            <a href="#contact" class="btn">Init: Contact</a>
           </div>
         </div>
 
         <div class="hero-visual">
           <div class="portrait-frame">
             <div class="frame-header">
-              <span>SRC: ASSETS/RINU.PNG</span>
+              <span>SRC: ASSETS/albin.PNG</span>
               <span class="cam-status">[REC]</span>
             </div>
             <div class="portrait-img-wrapper">
-              <img src="assets/rinu.png" alt="Albin Rajesh Feed" class="portrait-img">
+              <img src="assets/albin.png" alt="Albin Rajesh Feed" class="portrait-img" onerror="this.style.display='none'">
             </div>
           </div>
         </div>
@@ -489,6 +507,7 @@
         </div>
         <div class="card-body">
           <div class="card-tags">
+            <span class="tag tag-dev">IN DEVELOPMENT</span>
             <span class="tag">RASPBERRY PI</span>
             <span class="tag">NUMPY/SCIPY</span>
             <span class="tag">FFT</span>
@@ -549,17 +568,36 @@
     </div>
   </section>
 
+  <!-- RESUME SECTION -->
+  <section id="resume-section">
+    <h2 class="section-title scroll-reveal">03 // DOCUMENTATION</h2>
+    
+    <div class="card scroll-reveal" onclick="openResume()" style="max-width: 600px; margin: 0 auto; cursor: pointer;">
+      <div class="card-header">
+        <span>DIR: /docs/resume.pdf</span>
+        <span>[FILE_TYPE: PDF]</span>
+      </div>
+      <div class="card-body" style="text-align: center; padding: 40px 20px;">
+        <h3 class="card-title glitch" data-text="ALBIN_RAJESH_RESUME.PDF" style="font-size: 1.8rem; color: var(--accent);">ALBIN_RAJESH_RESUME.PDF</h3>
+        <p style="margin-bottom: 25px; color: #aaa;">>_ Click to initialize the document viewer</p>
+        <button class="btn btn-primary" style="pointer-events: none;">EXECUTE: VIEW_RESUME</button>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER / COMMS -->
   <footer id="contact" class="scroll-reveal">
-    <h2 style="margin-bottom: 15px;">[ INITIATE COMMUNICATION PROTOCOL ]</h2>
+    <!-- Font size increased for header -->
+    <h2 style="margin-bottom: 25px; font-size: 2.2rem; letter-spacing: -2px;">[ INITIATE COMMUNICATION PROTOCOL ]</h2>
     <a href="mailto:albinrajesh03@gmail.com" class="btn btn-primary" style="margin-bottom: 20px;">OPEN COMMS >></a>
     
+    <!-- Font size increased for links directly via CSS class definitions above -->
     <div class="footer-links">
       <a href="https://github.com/ARofficials" target="_blank">[ GITHUB ]</a>
       <a href="https://linkedin.com/in/albinrajesh" target="_blank">[ LINKEDIN ]</a>
     </div>
 
-    <p style="color: var(--text); margin-top: 40px;">root@albin-rajesh:~# END_OF_FILE<span class="cam-status">_</span></p>
+    <p style="color: var(--text); margin-top: 50px;">root@albin-rajesh:~# END_OF_FILE<span class="cam-status">_</span></p>
   </footer>
 
   <!-- FULLSCREEN PROJECT MODAL -->
@@ -567,7 +605,7 @@
     <div class="modal-container">
       <button class="back-btn" onclick="closeProject()">← Back to Home</button>
       
-      <img src="" alt="Project Hero Cover" class="modal-hero-img modal-anim-target" id="modal-img">
+      <img src="" alt="Project Hero Cover" class="modal-hero-img modal-anim-target" id="modal-img" onerror="this.style.display='none'">
       
       <div class="modal-header-group modal-anim-target">
         <h2 id="modal-title" class="glitch" data-text="Project Title">Project Title</h2>
@@ -588,12 +626,26 @@
           <!-- Tags injected here -->
         </div>
       </div>
+      
+    </div>
+  </div>
 
-      <div class="modal-section modal-anim-target">
-        <h3 class="modal-section-title">Mockups & Screenshots</h3>
-        <div class="modal-mockup-grid" id="modal-mockups">
-          <!-- Screenshot imgs injected here -->
-        </div>
+  <!-- FULLSCREEN RESUME MODAL -->
+  <div id="resume-modal" class="modal-hidden">
+    <div class="modal-container" style="max-width: 900px; height: 85vh; display: flex; flex-direction: column;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <button class="back-btn" style="margin-bottom: 0;" onclick="closeResume()">← Back to Home</button>
+        <a href="assets/resume.pdf" download="Albin_Rajesh_Resume.pdf" class="btn btn-primary" style="padding: 8px 15px; font-size: 11px;">[ DOWNLOAD .PDF ]</a>
+      </div>
+      
+      <div class="modal-header-group modal-anim-target" style="margin-bottom: 20px;">
+        <h2 class="glitch" data-text="RESUME DATA" style="font-size: 2rem; color: var(--accent); margin-bottom: 5px;">RESUME DATA</h2>
+        <p style="color: #aaa; font-size: 12px;">> Document rendering engine initialized successfully.</p>
+      </div>
+
+      <div class="modal-section modal-anim-target" style="flex-grow: 1; border: 1px solid var(--border); position: relative; background: #e0e0e0;">
+         <iframe src="assets/resume.pdf" width="100%" height="100%" style="border: none;" onerror="this.style.display='none'"></iframe>
       </div>
       
     </div>
@@ -609,26 +661,15 @@
         link: 'https://github.com/ARofficials',
         overview: 'VitalSense is an advanced computer vision and machine learning application that utilizes rPPG (remote Photoplethysmography) to extract physiological signals directly from facial micro-color variations. The system employs a hybrid approach, combining traditional POS (Plane-Orthogonal to Skin) signal processing with deep learning consensus models like TS-CAN and ResNet-1D for robust, real-time vital sign estimation in varying lighting conditions.',
         tech: ['Python', 'OpenCV', 'PyTorch', 'rPPG', 'ResNet-1D', 'TS-CAN'],
-        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=VITALSENSE_DASHBOARD',
-        mockups: [
-          'https://via.placeholder.com/400x800/050505/333333?text=UI_01',
-          'https://via.placeholder.com/400x800/050505/333333?text=UI_02',
-          'https://via.placeholder.com/400x800/050505/333333?text=UI_03',
-          'https://via.placeholder.com/400x800/050505/333333?text=UI_04'
-        ]
+        heroImg: 'assets/vitalsense.png'
       },
       'acoustic': {
         title: 'Acoustic Fault Detection',
         subtitle: 'Real-time mechanical fault detection system highly optimized for embedded IoT systems.',
         link: 'https://github.com/ARofficials',
         overview: 'Developed as a solution for early industrial machine failure detection, this embedded system listens to mechanical vibrations and noise. It uses Fast Fourier Transform (FFT) algorithms and spectrogram generation to create audio fingerprints of healthy vs. failing machinery. The Python processing pipeline was highly optimized to run smoothly on edge devices like the Raspberry Pi with minimal latency.',
-        tech: ['Raspberry Pi', 'Python', 'NumPy/SciPy', 'FFT', 'IoT', 'Embedded Linux'],
-        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=ACOUSTIC_FFT_SPECTROGRAM',
-        mockups: [
-          'https://via.placeholder.com/800x450/050505/333333?text=PI_DASH',
-          'https://via.placeholder.com/800x450/050505/333333?text=SIGNAL_GRAPH',
-          'https://via.placeholder.com/800x450/050505/333333?text=LOGS'
-        ]
+        tech: ['IN DEVELOPMENT', 'Raspberry Pi', 'Python', 'NumPy/SciPy', 'FFT', 'IoT', 'Embedded Linux'],
+        heroImg: 'assets/acoustic.png'
       },
       'ecommerce': {
         title: 'Local Seller E-Commerce',
@@ -636,53 +677,38 @@
         link: 'https://github.com/ARofficials',
         overview: 'A scalable Django-based marketplace application designed specifically for local retail businesses. It features secure user authentication, role-based access control (Admin, Seller, Buyer), dynamic product listing management, and integrated order tracking. The backend relies on PostgreSQL for relational data integrity, while the frontend provides a clean, responsive layout utilizing modern HTML/CSS/JS practices.',
         tech: ['Django', 'Python', 'PostgreSQL', 'HTML/CSS', 'JavaScript', 'Bootstrap'],
-        heroImg: 'https://via.placeholder.com/1200x600/050505/ccff00?text=ECOMMERCE_DASHBOARD',
-        mockups: [
-          'https://via.placeholder.com/800x600/050505/333333?text=STOREFRONT',
-          'https://via.placeholder.com/800x600/050505/333333?text=CART',
-          'https://via.placeholder.com/800x600/050505/333333?text=SELLER_PANEL'
-        ]
+        heroImg: 'assets/ecommerce.png'
       }
     };
 
-    // --- MODAL FUNCTIONS & ANIMATIONS ---
+    // --- PROJECT MODAL FUNCTIONS ---
     function openProject(projectId) {
       const data = projectsData[projectId];
       if (!data) return;
 
-      // Populate Data
       document.getElementById('modal-title').innerText = data.title;
       document.getElementById('modal-title').setAttribute('data-text', data.title);
       document.getElementById('modal-subtitle').innerText = data.subtitle;
       document.getElementById('modal-overview').innerText = data.overview;
-      document.getElementById('modal-img').src = data.heroImg;
       document.getElementById('modal-link').href = data.link;
+      
+      const modalImg = document.getElementById('modal-img');
+      modalImg.style.display = 'block'; 
+      modalImg.src = data.heroImg;
 
-      // Populate Tags
       const techContainer = document.getElementById('modal-tech');
       techContainer.innerHTML = '';
       data.tech.forEach(tech => {
         const span = document.createElement('span');
         span.className = 'tag';
+        if(tech === 'IN DEVELOPMENT') { span.classList.add('tag-dev'); }
         span.innerText = tech;
         techContainer.appendChild(span);
       });
 
-      // Populate Mockups
-      const mockupContainer = document.getElementById('modal-mockups');
-      mockupContainer.innerHTML = '';
-      data.mockups.forEach(imgUrl => {
-        const img = document.createElement('img');
-        img.src = imgUrl;
-        img.alt = data.title + ' mockup';
-        mockupContainer.appendChild(img);
-      });
-
-      // Trigger Modal Inner Animations
-      const animTargets = document.querySelectorAll('.modal-anim-target');
+      const animTargets = document.querySelectorAll('#project-modal .modal-anim-target');
       animTargets.forEach(el => el.classList.remove('modal-anim')); 
       
-      // Force DOM Reflow to reset animations
       void document.getElementById('project-modal').offsetWidth; 
 
       animTargets.forEach((el, index) => {
@@ -690,24 +716,47 @@
         el.classList.add('modal-anim');
       });
 
-      // Show Modal
       const modal = document.getElementById('project-modal');
       modal.classList.remove('modal-hidden');
-      modal.classList.remove('modal-closing'); // Ensure it's not trying to close
+      modal.classList.remove('modal-closing'); 
       document.body.style.overflow = 'hidden'; 
     }
 
     function closeProject() {
       const modal = document.getElementById('project-modal');
-      
-      // Trigger the reverse animation by adding the closing class
       modal.classList.add('modal-closing');
-      
-      // Wait for the exact duration of the closing animation (0.5s) before completely hiding the element
       setTimeout(() => {
         modal.classList.add('modal-hidden');
         modal.classList.remove('modal-closing');
-        document.body.style.overflow = 'auto'; // Restore background scrolling
+        document.body.style.overflow = 'auto'; 
+      }, 500); 
+    }
+
+    // --- RESUME MODAL FUNCTIONS ---
+    function openResume() {
+      const animTargets = document.querySelectorAll('#resume-modal .modal-anim-target');
+      animTargets.forEach(el => el.classList.remove('modal-anim')); 
+      
+      void document.getElementById('resume-modal').offsetWidth; 
+
+      animTargets.forEach((el, index) => {
+        el.style.animationDelay = `${0.3 + (index * 0.15)}s`; 
+        el.classList.add('modal-anim');
+      });
+
+      const modal = document.getElementById('resume-modal');
+      modal.classList.remove('modal-hidden');
+      modal.classList.remove('modal-closing'); 
+      document.body.style.overflow = 'hidden'; 
+    }
+
+    function closeResume() {
+      const modal = document.getElementById('resume-modal');
+      modal.classList.add('modal-closing');
+      setTimeout(() => {
+        modal.classList.add('modal-hidden');
+        modal.classList.remove('modal-closing');
+        document.body.style.overflow = 'auto'; 
       }, 500); 
     }
 
@@ -748,11 +797,15 @@
       window.addEventListener('scroll', () => {
         if (window.scrollY > 150) {
           if (!nav.classList.contains('nav-bottom')) {
+            // Glitch down
+            nav.classList.remove('nav-top');
             nav.classList.add('nav-bottom');
           }
         } else {
           if (nav.classList.contains('nav-bottom')) {
+            // Glitch up
             nav.classList.remove('nav-bottom');
+            nav.classList.add('nav-top');
           }
         }
       });
