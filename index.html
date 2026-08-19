@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ALBIN RAJESH // PORTFOLIO</title>
+  <title>ALBIN'S_//_PORTFOLIO_//</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
     /* ── RESET & ROOT (Cyber-Brutalist Theme) ── */
@@ -23,19 +23,32 @@
     }
 
     :root {
-      --bg: #050505;
-      --text: #e0e0e0;
+      --bg: #060706;
+      --bg-panel: rgba(12, 14, 11, 0.88);
+      --text: #dcdfd4;
+      --muted: #82887c;
       --accent: #ccff00; 
       --accent-dim: rgba(204, 255, 0, 0.15);
-      --border: #333333;
-      --font-mono: 'Space Mono', monospace;
-      --grid-size: 20px;
+      --accent-2: #00e1ff;
+      --accent-2-dim: rgba(0, 225, 255, 0.12);
+      --danger: #ff003c;
+      --border: #24261f;
+      --border-bright: #3a3d32;
+      --font-display: 'Space Mono', monospace;
+      --font-body: 'IBM Plex Mono', 'Space Mono', monospace;
+      --grid-size: 24px;
+      --space-1: 8px;
+      --space-2: 16px;
+      --space-3: 24px;
+      --space-4: 40px;
+      --space-5: 64px;
+      --space-6: 100px;
     }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: 14px; 
       line-height: 1.7;
       overflow-x: hidden;
@@ -44,7 +57,17 @@
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
       background-size: var(--grid-size) var(--grid-size);
       background-position: center top;
-      /*animation: flicker 0.15s infinite;*/ /* <-- REMOVE THIS LINE */
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    a:focus-visible, button:focus-visible, .card:focus-visible {
+      outline: 1px dashed var(--accent);
+      outline-offset: 4px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
     }
 
 
@@ -179,7 +202,7 @@
     ::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
     ::-webkit-scrollbar-thumb { background: var(--accent); }
 
-    h1, h2, h3 { font-weight: 700; text-transform: uppercase; letter-spacing: -1px; }
+    h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: -1px; }
 
     /* ── DYNAMIC NAVIGATION HUD ── */
     nav {
@@ -224,9 +247,13 @@
       50% { opacity: 0;}
     }
 
+    .nav-logo { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.5px; }
     .nav-links { display: flex; gap: 25px; align-items: center; }
     .nav-links a { color: var(--text); text-decoration: none; border: 1px solid transparent; padding: 4px 10px; transition: all 0.2s; }
     .nav-links a:hover { border-color: var(--accent); color: var(--accent); text-shadow: 0 0 5px var(--accent); }
+    .nav-uptime { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; font-variant-numeric: tabular-nums; }
+    .nav-uptime span { color: var(--accent-2); }
+    @media (max-width: 900px) { .nav-uptime { display: none; } }
 
     /* ── HERO SECTION ── */
     #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 5%; position: relative; }
@@ -253,7 +280,7 @@
     .role-box { background-color: #050505 !important; border: 1px solid var(--accent); padding: 8px 15px; display: inline-block; margin-bottom: 20px; box-shadow: 4px 4px 0px rgba(204, 255, 0, 0.2); position: relative; z-index: 10; }
     .hero-desc { font-size: clamp(1rem, 1.3vw, 1.15rem); max-width: 600px; margin-bottom: 30px; border-left: 2px solid var(--accent); padding-left: 15px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(3px); }
 
-    .btn { display: inline-block; text-transform: uppercase; font-weight: 700; text-decoration: none; padding: 12px 24px; font-size: 13px; border: 1px solid var(--text); color: var(--text); background: rgba(0, 0, 0, 0.8); transition: all 0.2s; position: relative; cursor: pointer; }
+    .btn { display: inline-block; font-family: var(--font-display); text-transform: uppercase; font-weight: 700; text-decoration: none; padding: 12px 24px; font-size: 13px; letter-spacing: 0.5px; border: 1px solid var(--text); color: var(--text); background: rgba(0, 0, 0, 0.8); transition: all 0.2s; position: relative; cursor: pointer; }
     .btn:hover { background: var(--text); color: var(--bg); }
     .btn-primary { border-color: var(--accent); color: var(--accent); }
     .btn-primary:hover { background: var(--accent); color: var(--bg); box-shadow: 0 0 15px var(--accent-dim); }
@@ -279,27 +306,44 @@
 
     /* ── TECH STACK MARQUEE ── */
     .marquee-container { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: rgba(5, 5, 5, 0.8); padding: 12px 0; overflow: hidden; white-space: nowrap; display: flex; }
-    .marquee-content { display: inline-block; animation: scroll-left 25s linear infinite; font-size: 1.2rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 8px rgba(204, 255, 0, 0.3); }
+    .marquee-content { display: inline-block; animation: scroll-left 25s linear infinite; font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 8px rgba(204, 255, 0, 0.3); }
     .marquee-content span { margin: 0 30px; }
     @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* ── PROJECTS GRID ── */
-    section { padding: 90px 5%; border-bottom: 1px solid var(--border); }
-    .section-title { font-size: 1.8rem; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
-    .section-title::after { content: ''; flex-grow: 1; height: 1px; background: var(--border); }
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+    section { padding: var(--space-6) 5%; border-bottom: 1px solid var(--border); }
+    .section-eyebrow { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-1); font-size: 11px; color: var(--muted); }
+    .section-eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); animation: blink 2s infinite; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: var(--space-4); display: flex; align-items: baseline; gap: 15px; }
+    .section-title::after { content: ''; flex-grow: 1; height: 1px; background: linear-gradient(90deg, var(--border-bright), transparent); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-3); }
 
-    .card { border: 1px solid var(--border); background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(3px); position: relative; transition: border-color 0.3s; cursor: pointer; }
-    .card:hover { border-color: var(--accent); box-shadow: 0 0 10px rgba(204, 255, 0, 0.1); }
-    .card-header { border-bottom: 1px solid var(--border); padding: 10px 15px; font-size: 11px; color: var(--accent); display: flex; justify-content: space-between; }
-    .card-body { padding: 25px; }
-    .card-title { font-size: 1.4rem; margin-bottom: 10px; transition: color 0.3s; }
+    .card { border: 1px solid var(--border); background: var(--bg-panel); backdrop-filter: blur(3px); position: relative; transition: border-color 0.25s, transform 0.25s; cursor: pointer; }
+    .card:hover { border-color: var(--accent); box-shadow: 0 0 20px rgba(204, 255, 0, 0.08); transform: translateY(-3px); }
+    .card-header { border-bottom: 1px solid var(--border); padding: 10px 15px; font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; letter-spacing: 0.5px; }
+    .card-status { display: flex; align-items: center; gap: 6px; }
+    .card-status .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-2); }
+    .card-status.is-dev .dot { background: var(--accent); animation: blink 1.4s infinite; }
+    .card-body { padding: var(--space-3); }
+    .card-title { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 10px; transition: color 0.3s; }
     .card:hover .card-title { color: var(--accent); }
-    .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
-    .tag { font-size: 10px; border: 1px solid var(--text); padding: 3px 8px; }
-    .card:hover .tag { border-color: var(--accent); color: var(--accent); }
+    .card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: var(--space-2); }
+    .tag { font-size: 10px; border: 1px solid var(--border-bright); color: var(--muted); padding: 3px 8px; letter-spacing: 0.5px; }
+    .card:hover .tag { border-color: var(--accent-2); color: var(--accent-2); }
     
     .tag-dev { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: bold; }
+    .card-footer-hint { padding: 0 var(--space-3) var(--space-2); font-size: 10px; color: var(--border-bright); display: flex; justify-content: flex-end; gap: 6px; opacity: 0; transform: translateX(-6px); transition: all 0.25s; }
+    .card:hover .card-footer-hint { opacity: 1; transform: translateX(0); color: var(--accent-2); }
+
+    .nav-logo a {
+      text-decoration: none; /* Removes the underline */
+      color: inherit;        /* Inherits the text color from your .nav-logo class */
+    }
+
+    .nav-logo a:hover {
+      color: var(--accent); 
+      text-shadow: 0 0 5px var(--accent);
+    }
 
     /* ── FULLSCREEN MODALS (Projects & Resume) ── */
     #project-modal, #resume-modal {
@@ -360,7 +404,7 @@
       background: transparent;
       color: var(--text);
       border: none;
-      font-family: var(--font-mono);
+      font-family: var(--font-body);
       font-size: 14px;
       cursor: pointer;
       text-transform: uppercase;
@@ -390,10 +434,13 @@
     .modal-section-title::before { content: "— "; color: var(--accent); }
 
     /* ── TERMINAL DATA (About/Experience) ── */
-    .terminal-box { border: 1px solid var(--border); background: rgba(10, 10, 10, 0.9); padding: 30px; position: relative; }
-    .terminal-box::before { content: 'USER_PROFILE_DATA.SYS'; position: absolute; top: -11px; left: 20px; background: var(--bg); padding: 0 10px; color: var(--accent); font-size: 12px; border: 1px solid var(--border); }
-    .data-row { display: grid; grid-template-columns: 180px 1fr; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 15px; font-size: 13px; }
-    .data-label { color: #888; }
+    .terminal-box { border: 1px solid var(--border); background: var(--bg-panel); padding: var(--space-4); position: relative; }
+    .terminal-box::before { content: 'USER_PROFILE_DATA.SYS'; position: absolute; top: -11px; left: 20px; background: var(--bg); padding: 0 10px; color: var(--accent); font-size: 12px; border: 1px solid var(--border); letter-spacing: 0.5px; }
+    .data-row { display: grid; grid-template-columns: 200px 1fr; gap: var(--space-2); margin-bottom: var(--space-2); border-bottom: 1px dashed var(--border); padding-bottom: var(--space-2); font-size: 13px; transition: border-color 0.2s; }
+    .data-row:last-child { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
+    .data-row:hover { border-bottom-color: var(--accent-2); }
+    .data-row:hover .data-label { color: var(--accent-2); }
+    .data-label { color: var(--muted); transition: color 0.2s; }
 
     /* ── FOOTER ── */
     footer { padding: 60px 5%; text-align: center; font-size: 12px; position: relative; z-index: 2; padding-bottom: 100px; }
@@ -430,13 +477,14 @@
 
   <!-- HUD NAVIGATION -->
   <nav id="hud-nav">
-    <div class="nav-logo">ID: A.RAJESH_//</div>
+    <div class="nav-logo" ><a href="#hero">ID: ALBIN.R_//</a></div>
     <div class="nav-links">
       <a href="#projects">[ WORKS ]</a>
       <a href="#data">[ DATA ]</a>
       <a href="#resume-section">[ DOCS ]</a>
       <a href="#contact">[ COMMS ]</a>
     </div>
+    <div class="nav-uptime" aria-hidden="true">UPTIME: <span id="uptime-clock">00:00:00</span></div>
   </nav>
 
   <!-- HERO SECTION -->
@@ -445,7 +493,7 @@
       <div class="hero-content">
         
         <div class="hero-text">
-          <div class="sys-status">SYS.ONLINE // BTECH_ADDED</div>
+          <div class="sys-status">SYS.ONLINE // BTECH_IT_ACTIVE</div>
           <h1 class="hero-title glitch" data-text="ALBIN RAJESH">ALBIN RAJESH</h1>
           
           <div class="role-box">
@@ -488,14 +536,15 @@
 
   <!-- PROJECTS DATA -->
   <section id="projects">
-    <h2 class="section-title scroll-reveal">01 // DEPLOYED_SYSTEMS</h2>
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> ls -la /src</div>
+    <h2 class="section-title scroll-reveal">01 // SYSTEMS</h2>
     
     <div class="projects-grid">
       <!-- Project 1 -->
-      <div class="card scroll-reveal" onclick="openProject('vitalsense')">
+      <div class="card scroll-reveal" onclick="openProject('vitalsense')" tabindex="0" role="button" aria-label="Open VitalSense project details">
         <div class="card-header">
           <span>DIR: /src/vitalsense/</span>
-          <span>[ML/CV]</span>
+          <span class="card-status"><span class="dot"></span>ML/CV · LIVE</span>
         </div>
         <div class="card-body">
           <div class="card-tags">
@@ -507,13 +556,14 @@
           <h3 class="card-title">VitalSense</h3>
           <p>Camera-based heart rate monitoring system estimating HR, HRV, and stress using hybrid POS and deep learning consensus models via standard webcam feeds.</p>
         </div>
+        <div class="card-footer-hint">OPEN_FILE →</div>
       </div>
 
       <!-- Project 2 -->
-      <div class="card scroll-reveal" onclick="openProject('acoustic')">
+      <div class="card scroll-reveal" onclick="openProject('acoustic')" tabindex="0" role="button" aria-label="Open Acoustic Fault Detection project details">
         <div class="card-header">
           <span>DIR: /src/fault_detection/</span>
-          <span>[EMBEDDED]</span>
+          <span class="card-status is-dev"><span class="dot"></span>EMBEDDED · WIP</span>
         </div>
         <div class="card-body">
           <div class="card-tags">
@@ -525,13 +575,14 @@
           <h3 class="card-title">Acoustic Fault Detection</h3>
           <p>Real-time mechanical fault detection system utilizing FFT-based audio fingerprinting and spectrogram analysis, highly optimized for embedded systems.</p>
         </div>
+        <div class="card-footer-hint">OPEN_FILE →</div>
       </div>
 
       <!-- Project 3 -->
-      <div class="card scroll-reveal" onclick="openProject('ecommerce')">
+      <div class="card scroll-reveal" onclick="openProject('ecommerce')" tabindex="0" role="button" aria-label="Open Local Seller E-Commerce project details">
         <div class="card-header">
           <span>DIR: /src/ecommerce/</span>
-          <span>[FULL-STACK]</span>
+          <span class="card-status"><span class="dot"></span>FULL-STACK · LIVE</span>
         </div>
         <div class="card-body">
           <div class="card-tags">
@@ -540,14 +591,16 @@
             <span class="tag">HTML/CSS/JS</span>
           </div>
           <h3 class="card-title">Local Seller E-Commerce</h3>
-          <p>Created a robust full-stack web platform enabling local sellers to seamlessly list, track, and manage their products online.</p>
+          <p>Created a robust full-stack web platform enabling local sellers to seamlessly list, track, and manage their products online and grow their business effortlessly.</p>
         </div>
+        <div class="card-footer-hint">OPEN_FILE →</div>
       </div>
     </div>
   </section>
 
   <!-- EXPERIENCE & PROFILE DATA -->
   <section id="data">
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> cat /var/log/profile</div>
     <h2 class="section-title scroll-reveal">02 // SYSTEM_LOGS</h2>
     
     <div class="terminal-box scroll-reveal">
@@ -580,6 +633,7 @@
 
   <!-- RESUME SECTION -->
   <section id="resume-section">
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> open ./resume.pdf</div>
     <h2 class="section-title scroll-reveal">03 // DOCUMENTATION</h2>
     
     <div class="card scroll-reveal" onclick="openResume()" style="max-width: 600px; margin: 0 auto; cursor: pointer;">
@@ -685,7 +739,7 @@
         title: 'Local Seller E-Commerce',
         subtitle: 'Robust full-stack web platform enabling local sellers to seamlessly manage their products online.',
         link: 'https://github.com/ARofficials',
-        overview: 'A scalable Django-based marketplace application designed specifically for local retail businesses. It features secure user authentication, role-based access control (Admin, Seller, Buyer), dynamic product listing management, and integrated order tracking. The backend relies on PostgreSQL for relational data integrity, while the frontend provides a clean, responsive layout utilizing modern HTML/CSS/JS practices.',
+        overview: 'A scalable Django-based marketplace application designed specifically for local retail businesses, ensuring secure user authentication, role-based access control, dynamic product listing management, and integrated order tracking. It features secure user authentication, role-based access control (Admin, Seller, Buyer), dynamic product listing management, and integrated order tracking. The backend relies on PostgreSQL for relational data integrity, while the frontend provides a clean, responsive layout utilizing modern HTML/CSS/JS practices.',
         tech: ['Django', 'Python', 'PostgreSQL', 'HTML/CSS', 'JavaScript', 'Bootstrap'],
         heroImg: 'assets/ecommerce.png'
       }
@@ -802,6 +856,29 @@
           });
         }, 400); 
       }, 2400);
+
+      // --- SESSION UPTIME CLOCK (signature HUD detail) ---
+      const uptimeEl = document.getElementById('uptime-clock');
+      if (uptimeEl) {
+        const start = Date.now();
+        setInterval(() => {
+          const diff = Math.floor((Date.now() - start) / 1000);
+          const h = String(Math.floor(diff / 3600)).padStart(2, '0');
+          const m = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+          const s = String(diff % 60).padStart(2, '0');
+          uptimeEl.textContent = `${h}:${m}:${s}`;
+        }, 1000);
+      }
+
+      // --- KEYBOARD ACTIVATION FOR PROJECT CARDS ---
+      document.querySelectorAll('.card[role="button"]').forEach(card => {
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            card.click();
+          }
+        });
+      });
 
       const nav = document.getElementById('hud-nav');
       window.addEventListener('scroll', () => {
