@@ -54,11 +54,20 @@
       font-size: 15px; 
       line-height: 1.7;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-image: 
         linear-gradient(var(--border) 1px, transparent 1px),
         linear-gradient(90deg, var(--border) 1px, transparent 1px);
       background-size: var(--grid-size) var(--grid-size);
       background-position: center top;
+      z-index: -1;
+      pointer-events: none;
     }
 
     ::selection { background: var(--accent); color: var(--bg); }
@@ -407,6 +416,22 @@
 
     .hero-visual { flex: 0 0 320px; position: relative; }
     .portrait-frame { border: 1px solid var(--accent); background: rgba(5, 5, 5, 0.8); padding: 10px; position: relative; box-shadow: 0 0 15px var(--accent-dim); overflow: hidden; }
+
+    /* ── SCHEMATIC CALLOUTS (blueprint-style annotations around hero visual) ── */
+    .hero-visual { position: relative; }
+    .schematic-tag { position: absolute; display: flex; align-items: center; font-size: 10px; letter-spacing: 0.5px; color: var(--muted); white-space: nowrap; pointer-events: none; }
+    .schematic-tag .callout-line { height: 1px; background: var(--border-bright); }
+    .schematic-tag .callout-label { border: 1px solid var(--border-bright); padding: 2px 8px; background: var(--bg); }
+    .schematic-tag .callout-label b { color: var(--accent-2); font-weight: 700; }
+    .tag-a { top: 8%; left: -14%; }
+    .tag-a .callout-line { width: 40px; margin-right: -1px; }
+    .tag-b { top: 8%; right: -16%; flex-direction: row-reverse; }
+    .tag-b .callout-line { width: 44px; margin-left: -1px; }
+    .tag-c { bottom: 6%; left: -12%; }
+    .tag-c .callout-line { width: 32px; margin-right: -1px; }
+    .schematic-coords { position: absolute; bottom: -28px; left: 0; font-size: 10px; color: var(--border-bright); letter-spacing: 0.5px; }
+    .schematic-fig { position: absolute; top: -28px; right: 0; font-size: 10px; color: var(--border-bright); text-align: right; letter-spacing: 0.5px; line-height: 1.5; }
+    @media (max-width: 900px) { .schematic-tag, .schematic-coords, .schematic-fig { display: none; } }
     .portrait-frame::before { content: ''; position: absolute; top: -4px; left: -4px; right: -4px; bottom: -4px; border: 1px dashed var(--border); pointer-events: none; z-index: -1; }
     .frame-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; margin-bottom: 10px; font-size: 10px; color: var(--accent); }
     .cam-status { animation: blink 2s infinite; }
@@ -418,7 +443,8 @@
       display: block; 
       transition: filter 0.4s; 
     }
-    .pportrait-img-wrapper::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient( 0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px ); pointer-events: none; }
+    .portrait-frame:hover .portrait-img { filter: none; }
+    .portrait-img-wrapper::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient( 0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px ); pointer-events: none; }
 
     @keyframes cam-glitch { 0% { transform: translate(0, 0); } 20% { transform: translate(-2px, 1px); filter: grayscale(20%) contrast(2) saturate(180%) brightness(1.2); } 40% { transform: translate(-1px, -2px); } 60% { transform: translate(2px, 2px); } 80% { transform: translate(1px, -1px); } 100% { transform: translate(0, 0); } }
     .portrait-frame:hover .portrait-img { animation: cam-glitch 0.15s infinite; }
@@ -574,10 +600,12 @@
     .comms-status .cam-status { color: var(--accent-yellow); }
     .comms-actions { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
     .btn-copy { min-width: 148px; }
-    .footer-links { margin-top: 30px; display: flex; justify-content: center; gap: 30px; }
-    .footer-links a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.2s, border-color 0.2s; font-size: 1.4rem; }
-    .footer-links a:hover { color: var(--accent); border-bottom-color: var(--accent); text-shadow: 0 0 5px var(--accent); }
-    .comms-title { margin-bottom: 12px; font-size: clamp(0.5rem, 3vw, 1.7rem); letter-spacing: clamp(-1.5px, -0.15vw, -1px); white-space: nowrap; }
+    .footer-links { margin-top: 15px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .footer-links a { display: inline-flex; align-items: center; gap: 8px; }
+    .footer-links a .arrow { transition: transform 0.2s; }
+    .footer-links a:hover .arrow { transform: translate(2px, -2px); }
+    .footer-meta { max-width: 640px; margin: 30px auto 0; padding-top: 20px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 10px; color: var(--border-bright); letter-spacing: 0.5px; }
+    .comms-title { margin-bottom: 12px; font-size: 2.6rem; letter-spacing: -1px; white-space: nowrap; display: inline-block; max-width: 100%; }
 
     /* Grid item min-width safety: prevents cards forcing horizontal
        overflow on very narrow phones where 300px > available width. */
@@ -590,12 +618,13 @@
       :root { --space-5: 48px; --space-6: 72px; }
 
       .hero-content { flex-direction: column; text-align: center; }
+      .hero-container { padding-top: 0; }
       .hero-visual { order: -1; width: 100%; max-width: 250px; margin: 0 auto 20px; }
       .hero-actions { justify-content: center; }
       .hero-desc { margin: 0 auto 30px; border-left: none; border-top: 2px solid var(--accent); padding-left: 0; padding-top: 15px; }
       .hero-text .btn { margin-bottom: 10px; }
       .hero-title { font-size: 3rem; }
-      #hero { min-height: auto; padding: 140px 5% 60px; }
+      #hero { min-height: auto; padding: 115px 5% 60px; }
       .data-row { grid-template-columns: 1fr; gap: 5px; }
 
       nav { flex-direction: column; align-items: center; gap: 10px; padding: 12px; }
@@ -726,6 +755,10 @@
         </div>
 
         <div class="hero-visual">
+          <span class="schematic-fig">FIG. 01<br>SCALE 1:1</span>
+          <span class="schematic-tag tag-a"><span class="callout-line"></span><span class="callout-label">A — <b>INPUT</b></span></span>
+          <span class="schematic-tag tag-b"><span class="callout-label"><b>OUTPUT</b> — B</span><span class="callout-line"></span></span>
+          <span class="schematic-tag tag-c"><span class="callout-line"></span><span class="callout-label">C — <b>FEED</b></span></span>
           <div class="portrait-frame">
             <div class="frame-header">
               <span>SRC: ASSETS/albin.PNG</span>
@@ -735,6 +768,7 @@
               <img src="assets/albin.png" alt="Albin Rajesh Feed" class="portrait-img" onerror="this.style.display='none'">
             </div>
           </div>
+          <span class="schematic-coords">COORDS: X: 428 // Y: 112</span>
         </div>
 
       </div>
@@ -751,7 +785,7 @@
 
   <!-- PROJECTS DATA -->
   <section id="projects">
-    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> ls -la /src</div>
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> // ls -la /src</div>
     <h2 class="section-title scroll-reveal">01 // SYSTEMS</h2>
     
     <div class="projects-grid">
@@ -769,7 +803,7 @@
             <span class="tag">RESNET-1D</span>
           </div>
           <h3 class="card-title">VitalSense</h3>
-          <p>Camera-based heart rate monitoring system estimating HR, HRV, and stress using hybrid POS and deep learning consensus models via standard webcam feeds and Raspberry Pi devices.</p>
+          <p>Camera-based heart rate monitoring system estimating HR, HRV, and stress using hybrid POS and deep learning consensus models via standard webcam feeds.</p>
         </div>
         <div class="card-footer-hint">OPEN_FILE →</div>
       </div>
@@ -788,7 +822,7 @@
             <span class="tag">FFT</span>
           </div>
           <h3 class="card-title">Acoustic Fault Detection</h3>
-          <p>Real-time mechanical fault detection system utilizing FFT-based audio fingerprinting and spectrogram analysis, highly optimized for embedded systems and low power consumption.</p>
+          <p>Real-time mechanical fault detection system utilizing FFT-based audio fingerprinting and spectrogram analysis, highly optimized for embedded systems.</p>
         </div>
         <div class="card-footer-hint">OPEN_FILE →</div>
       </div>
@@ -815,7 +849,7 @@
 
   <!-- EXPERIENCE & PROFILE DATA -->
   <section id="data">
-    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> cat /var/log/profile</div>
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> // cat /var/log/profile</div>
     <h2 class="section-title scroll-reveal">02 // SYSTEM_LOGS</h2>
     
     <div class="terminal-box scroll-reveal">
@@ -849,7 +883,7 @@
 
   <!-- RESUME SECTION -->
   <section id="resume-section">
-    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> open ./resume.pdf</div>
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> // open ./resume.pdf</div>
     <h2 class="section-title scroll-reveal">03 // DOCUMENTATION</h2>
     
     <div class="card scroll-reveal" onclick="openResume()" style="max-width: 600px; margin: 0 auto; cursor: pointer;">
@@ -866,9 +900,11 @@
   </section>
 
   <!-- FOOTER / COMMS -->
-  <footer id="contact" class="scroll-reveal">
-    <div class="comms-panel">
-      <h2 class="comms-title">[ INITIATE COMMUNICATION PROTOCOL ]</h2>
+  <footer id="contact" class="scroll-reveal" style="text-align: left;">
+    <div class="section-eyebrow scroll-reveal"><span class="dot"></span> // ping ./contact_me</div>
+    <h2 class="section-title scroll-reveal">04 // COMMS</h2>
+    <div class="comms-panel" style="text-align: center;">
+      <h2 class="comms-title" id="comms-title">[ INITIATE COMMUNICATION PROTOCOL ]</h2>
       <p class="comms-status">&gt; secure_channel established — awaiting your input<span class="cam-status">_</span></p>
 
       <div class="comms-actions">
@@ -877,12 +913,18 @@
       </div>
 
       <div class="footer-links">
-        <a href="https://github.com/ARofficials" target="_blank">[ GITHUB ]</a>
-        <a href="https://linkedin.com/in/albinrajesh" target="_blank">[ LINKEDIN ]</a>
+        <a href="https://github.com/ARofficials" target="_blank" class="btn">GITHUB <span class="arrow">↗</span></a>
+        <a href="https://linkedin.com/in/albinrajesh" target="_blank" class="btn">LINKEDIN <span class="arrow">↗</span></a>
       </div>
     </div>
 
-    <p style="color: var(--text); margin-top: 40px;">root@albin-rajesh:~# END_OF_FILE<span class="cam-status">_</span></p>
+    <p style="color: var(--text); margin-top: 40px; text-align: center;">root@albin-rajesh:~# END_OF_FILE<span class="cam-status">_</span></p>
+
+    <div class="footer-meta">
+      <span>© 2026 ALBIN RAJESH</span>
+      <span>NO_TRACKERS // NO_ADS // STATIC_SITE</span>
+      <span>BUILD v2.0 // MODEL PORTFOLIO_X1</span>
+    </div>
   </footer>
 
   <!-- FULLSCREEN PROJECT MODAL -->
@@ -1070,7 +1112,37 @@
       }, 500); 
     }
 
+    // --- AUTO-FIT COMMS TITLE: shrink font-size until it fits its box on one line, on any screen size ---
+    function fitCommsTitle() {
+      const el = document.getElementById('comms-title');
+      if (!el) return;
+      const container = el.parentElement;
+      const styles = getComputedStyle(container);
+      const available = container.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight);
+
+      const maxPx = 42;  
+      const minPx = 13;  
+      let fontSize = maxPx;
+      el.style.fontSize = fontSize + 'px';
+
+      while (el.scrollWidth > available && fontSize > minPx) {
+        fontSize -= 1;
+        el.style.fontSize = fontSize + 'px';
+      }
+    }
+
+    let commsResizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(commsResizeTimer);
+      commsResizeTimer = setTimeout(fitCommsTitle, 100);
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitCommsTitle);
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      fitCommsTitle();
       
       const loader = document.getElementById('retro-loader');
       
