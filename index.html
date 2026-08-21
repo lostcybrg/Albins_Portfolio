@@ -22,6 +22,17 @@
       scroll-behavior: smooth; /* Enables smooth scrolling for anchor links */
     }
 
+    /* Mobile-only: keep native (instant) scrolling for the user's own
+       touch/swipe scrolling. Smooth-scroll behavior is meant for
+       programmatic jumps (nav-link anchors); on some mobile browsers it
+       also gets applied to momentum touch scrolling and can fight with it,
+       producing a visible "snap" to a nearby section. Anchor links inside
+       JS still call scrollIntoView/etc. against this rule as needed, so
+       nav taps are unaffected by this override. */
+    @media (max-width: 900px) {
+      html { scroll-behavior: auto; }
+    }
+
     :root {
       --bg: #060706;
       --bg-panel: rgba(12, 14, 11, 0.88);
@@ -1132,7 +1143,17 @@
     }
 
     let commsResizeTimer;
+    let lastViewportWidth = window.innerWidth;
     window.addEventListener('resize', () => {
+      // Mobile browsers fire 'resize' whenever the address bar shows/hides
+      // while the user scrolls (this changes viewport HEIGHT, not width).
+      // Re-measuring and rewriting comms-title's font-size on every one of
+      // those events forced a layout reflow in the middle of a scroll,
+      // which is what caused the page to visually snap to a different
+      // section on mobile. Only react to genuine width changes
+      // (rotation / actual resize), not the toolbar show/hide noise.
+      if (window.innerWidth === lastViewportWidth) return;
+      lastViewportWidth = window.innerWidth;
       clearTimeout(commsResizeTimer);
       commsResizeTimer = setTimeout(fitCommsTitle, 100);
     });
